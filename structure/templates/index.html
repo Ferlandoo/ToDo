@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Do List</title>
-    <link rel="icon" type="image/x-icon" href="../static/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -13,7 +13,7 @@
     <header class="relative z-50 w-full h-[10vh]">
         <div class="container flex items-center justify-center h-full max-w-6xl px-8 mx-auto xl:px-0">
             <a class="relative flex items-center inline-block h-5 h-full font-black leading-none">
-                <img src="../static/images/logo.svg" alt="Logo" class="w-12 h-12">
+                <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo" class="w-12 h-12">
                 <span class="ml-3 text-xl text-gray-800">To Do <span class="text-indigo-500">List</span></span>
             </a>
         </div>
@@ -53,7 +53,7 @@
                 <p class="relative pr-0 mb-8 text-base text-gray-600 sm:text-lg xl:text-xl lg:pr-20">Become focused,
                     organized,
                     and calm with To Do List. The worlds #1 task manager and to-do list app.</p>
-                <a href="auth.html"
+                <a href="{{ url_for('auth.login') }}"
                     class="relative self-start inline-block w-auto px-8 py-4 mx-auto mt-0 text-base font-bold text-white bg-indigo-600 rounded-md shadow-xl sm:mt-1 fold-bold lg:mx-0">Signup
                     Today!</a>
             </div>

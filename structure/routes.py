@@ -15,10 +15,10 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user and user.check_password(form.password.data):
             login_user(user)
-            return redirect(url_for('main.index'))
+            return redirect(url_for('main.profile'))
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
-    return render_template('login.html', form=form)
+    return render_template('auth.html', form=form)
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -30,15 +30,19 @@ def register():
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('auth.login'))
-    return render_template('register.html', form=form)
+    return render_template('auth.html', form=form)
 
 @auth.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
 
 @main.route('/')
-@login_required
 def index():
     return render_template('index.html')
 
+@main.route('/profile')
+@login_required
+def profile():
+    return render_template('dashboard.html')

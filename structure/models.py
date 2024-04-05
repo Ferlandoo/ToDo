@@ -14,7 +14,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(64), unique=True)
     email = db.Column(db.String(120), unique=True)
     password = db.Column(db.String(128))
-    notes = db.relationship('Note')
+    notes = db.relationship('Task')
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
