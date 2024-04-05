@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../static/images/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Dashboard - To Do List</title>
+</head>
+
+<body class="h-72 bg-gradient-to-r from-indigo-900 to-indigo-700">
+    <header
+        class="fixed inset-x-0 top-0 z-30 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80 py-3 shadow backdrop-blur-lg md:top-6 md:rounded-3xl lg:max-w-screen-lg">
+        <div class="px-4">
+            <div class="flex items-center justify-between">
+                <div class="flex shrink-0">
+                    <a aria-current="page" class="flex items-center" href="index.html">
+                        <img class="h-11 w-auto" src="../static/images/logo.svg" alt="logo">
+                    </a>
+                </div>
+                <div class="relative md:block">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 text-gray-400" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                        </svg>
+                        <span class="sr-only">Search icon</span>
+                    </div>
+                    <input type="text" id="search-navbar"
+                        class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-3xl bg-white-50 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Search...">
+                </div>
+                <div class="flex items-center justify-end gap-3">
+                    <a class="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        href="/login">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div
+        class="grid mt-32 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80 py-3 shadow backdrop-blur-lg md:top-6 md:rounded-3xl lg:max-w-screen-lg">
+        <div class="grid grid-cols-6 gap-4 px-4">
+            <div class="col-start-1 col-end-6">
+                <input type="text" id="add-todo"
+                    class="block w-full p-2 pl-3 text-base text-gray-900 border border-gray-300 rounded-2xl bg-white-50 focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Add...">
+            </div>
+            <div class="col-end-7 col-span-1">
+                <a class="inline-flex items-center justify-center w-full rounded-2xl bg-indigo-600 px-3 p-2 shadow-sm transition-all duration-150 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    id="add-todo">
+                    <svg class="w-6 h-6" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 gap-4 px-4 mt-8">
+            <ul id="tasks">
+                {% for task in user.tasks %}
+                <li class="list-group-item">
+                    {{ task.data }}
+                    <button type="button" class="close" onClick="deleteNote({{ task.id }})">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <footer
+        class="fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80 py-3 shadow backdrop-blur-lg md:bottom-6 md:rounded-3xl lg:max-w-screen-lg">
+        <div class="text-center text-gray-500">&copy; 2024 <span class="text-indigo-500">Ferlando.me.</span>
+            All right reserved.</div>
+    </footer>
+    {% block javascript %}
+    <script type="text/javascript">
+        function deleteNote(noteId) {
+            fetch("/delete-note", {
+                method: "POST",
+                body: JSON.stringify({ noteId: noteId }),
+            }).then((_res) => {
+                window.location.href = "/";
+            });
+        }
+    </script>
+    {% endblock %}
+</body>
+
+</html>
