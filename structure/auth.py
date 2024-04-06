@@ -1,24 +1,24 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash
-from structure.models import User
-from structure import db
+from .models import User
+from . import db
 from .forms import LoginForm, RegistrationForm
 
 auth = Blueprint('auth', __name__)
-main = Blueprint('main', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user and user.check_password(form.password.data):
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = User.query.filter_by(username=username).first()
+        if user and user.check_password(password):
             login_user(user)
             return redirect(url_for('main.profile'))
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
-    return render_template('auth.html', form=form)
+    return render_template('auth.html', form=LoginForm())
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -37,12 +37,3 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
-
-@main.route('/')
-def index():
-    return render_template('index.html')
-
-@main.route('/profile')
-@login_required
-def profile():
-    return render_template('dashboard.html')
