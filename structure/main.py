@@ -10,4 +10,4 @@ def index():
 @main.route('/profile')
 @login_required
 def profile():
-    return render_template('dashnoard.html')
+    return render_template('dashboard.html', name=current_user.username)
