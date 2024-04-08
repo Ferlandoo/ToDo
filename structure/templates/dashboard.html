@@ -36,22 +36,30 @@
     </header>
     <div
         class="grid mt-32 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80 py-3 shadow backdrop-blur-lg md:top-6 md:rounded-3xl lg:max-w-screen-lg">
-        <div class="grid grid-cols-6 gap-4 px-4">
-            <div class="col-start-1 col-end-6">
-                <input type="text" id="add-todo"
-                    class="block w-full p-2 pl-3 text-base text-gray-900 border border-gray-300 rounded-2xl bg-white-50 focus:ring-indigo-500 focus:border-indigo-500"
-                    placeholder="Add...">
-            </div>
-            <div class="col-end-7 col-span-1">
-                <a class="inline-flex items-center justify-center w-full rounded-2xl bg-indigo-600 px-3 p-2 shadow-sm transition-all duration-150 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    id="add-todo">
-                    <svg class="w-6 h-6" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                    </svg>
-                </a>
-            </div>
+        <form method="POST" class="grid grid-cols-7 gap-4 px-4">
+            {{ form.hidden_tag() }}
+            {{ form.title(class="col-span-2 block w-full p-2 pl-3 text-base text-gray-900 border border-gray-300
+            rounded-l-2xl bg-white-50 focus:ring-indigo-500 focus:border-indigo-500") }}
+            {{ form.content(class="col-span-4 block w-full p-2 pl-3 text-base text-gray-900 border border-gray-300
+            rounded-r-2xl bg-white-50 focus:ring-indigo-500 focus:border-indigo-500") }}
+            <button type="submit"
+                class="col-span-1 inline-flex items-center justify-center w-full rounded-2xl bg-indigo-600 px-3 p-2 shadow-sm transition-all duration-150 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                <svg class="w-6 h-6" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+            </button>
+        </form>
+    </div>
+    <div class="grid grid-flow-row-dense auto-rows-max">
+        {% for task in user.task %}
+        <div
+            class="mt-4 mx-auto w-auto max-w-80 border border-gray-100 bg-white/80 px p-4 shadow backdrop-blur-lg md:top-6 md:rounded-xl">
+            <h1 class="bg-indigo-600 w-auto max-w-fit px-3 py-1 rounded text-white font-medium ">{{
+                task.title }}</h1>
+            <p>{{ task.content }}</p>
         </div>
+        {% endfor %}
     </div>
     <footer
         class="fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80 py-3 shadow backdrop-blur-lg md:bottom-6 md:rounded-3xl lg:max-w-screen-lg">

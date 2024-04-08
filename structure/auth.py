@@ -15,7 +15,7 @@ def login():
         if user and user.check_password(form.password.data):
             login_user(user)
             flash('Login Successful', 'success')
-            return render_template('dashboard.html', username=user.username)
+            return redirect(url_for('main.profile'))
         else:
             flash('Login Unsuccessful. Please check username and password', 'error')
     return render_template('sign_in.html', form=form)
