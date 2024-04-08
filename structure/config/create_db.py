@@ -1,4 +1,5 @@
 from sqlalchemy import create_engine, text
+from flask_sqlalchemy import SQLAlchemy
 
 def create_database():
     engine = create_engine('mysql+pymysql://root:1234@localhost:3306')
