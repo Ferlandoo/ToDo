@@ -28,43 +28,158 @@
                         placeholder="Search...">
                 </div>
                 <div class="flex items-center justify-end gap-3">
-                    <a class="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    <a class="inline-flex items-center justify-center rounded-xl bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         href="{{ url_for('auth.logout') }}">Logout</a>
                 </div>
             </div>
         </div>
     </header>
     <div
-        class="grid mt-32 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80 py-3 shadow backdrop-blur-lg md:top-6 md:rounded-3xl lg:max-w-screen-lg">
-        <form method="POST" class="grid grid-cols-7 gap-4 px-4">
+        class="grid mt-24 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80 py-3 shadow backdrop-blur-lg md:top-6 md:rounded-3xl lg:max-w-screen-lg sm:mt-32">
+        <form method="POST" class="grid grid-cols-7 gap-2 px-2 sm:gap-4 sm:px-4">
             {{ form.hidden_tag() }}
             {{ form.title(class="col-span-2 block w-full p-2 pl-3 text-base text-gray-900 border border-gray-300
             rounded-l-2xl bg-white-50 focus:ring-indigo-500 focus:border-indigo-500") }}
             {{ form.content(class="col-span-4 block w-full p-2 pl-3 text-base text-gray-900 border border-gray-300
             rounded-r-2xl bg-white-50 focus:ring-indigo-500 focus:border-indigo-500") }}
             <button type="submit"
-                class="col-span-1 inline-flex items-center justify-center w-full rounded-2xl bg-indigo-600 px-3 p-2 shadow-sm transition-all duration-150 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                class="col-span-1 inline-flex items-center justify-center w-full rounded-2xl bg-indigo-500 px-3 p-2 shadow-sm transition-all duration-150 hover:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 <svg class="w-6 h-6" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round"
                     stroke-width="2" viewBox="0 0 24 24">
                     <path d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>
             </button>
+            <div class="form-group col-span-7">
+                {% set category_color = {'1': 'indigo', '2': 'red', '3': 'yellow'} %}
+                <div class="flex items-center gap-5">
+                    {% for value, label in form.category.choices %}
+                    {% set color = category_color[value] if value in category_color else 'green' %}
+                    <label
+                        class="bg-{{color}}-500 text-white py-2 rounded-xl w-1/4 flex items-center justify-center hover:bg-{{color}}-600">
+                        <input type="radio" name="category" value="{{ value }}">&nbsp;{{ label }}
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
         </form>
     </div>
-    <div class="grid grid-flow-row-dense auto-rows-max">
-        {% for task in user.task %}
+    <div
+        class="mt-4 grid grid-cols-1 gap-3 mx-auto w-full max-w-screen-md lg:max-w-screen-lg sm:grid-cols-2 md:grid-cols-3 sm:gap-4">
+        {% set title_color = {'1': 'indigo', '2': 'red', '3': 'yellow' } %}
+        {% for task in user.task|reverse %}
+        {% set color = title_color[task.category] if task.category in title_color else 'green' %}
         <div
-            class="mt-4 mx-auto w-auto max-w-80 border border-gray-100 bg-white/80 px p-4 shadow backdrop-blur-lg md:top-6 md:rounded-xl">
-            <h1 class="bg-indigo-600 w-auto max-w-fit px-3 py-1 rounded text-white font-medium ">{{
-                task.title }}</h1>
-            <p>{{ task.content }}</p>
+            class="w-auto mx-2 border rounded-xl h-fit break-words border-gray-100 bg-white/80 p-4 shadow backdrop-blur-lg md:top-6 sm:rounded-xl sm:w-full sm:mx-auto">
+            <div class="absolute right-0 top-0 mt-4 mr-2 flex">
+                <button
+                    class="popupUpdateTask aspect-square bg-{{color}}-500 text-white text-sm px-1 py-1 rounded-lg flex items-center justify-center mr-2 hover:bg-{{color}}-600">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path>
+                        <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
+                    </svg>
+                </button>
+                <button onclick="location.href='{{ url_for('main.delete_task', id=task.id) }}'"
+                    class="aspect-square bg-{{color}}-500 text-white text-sm px-1 py-1 rounded-lg flex items-center justify-center mr-2 hover:bg-{{color}}-600">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                </button>
+            </div>
+            <h1 class="bg-{{color}}-500 w-auto max-w-fit px-3 py-1 rounded text-white font-medium ">
+                {{ task.title }}</h1>
+            <p class="mt-2 text-justify">{% if task.content|length > 100 %}
+                {{ task.content[:100] ~ '...' }}
+                {% else %}
+                {{ task.content }}
+                {% endif %}
+            </p>
+            {% if task.content|length > 260 %}
+            <div class="text-right">
+                <button
+                    class="popupTask mt-3 bg-{{color}}-500 text-white text-sm px-2 py-1 rounded-lg hover:bg-{{color}}-600"
+                    data-id="{{ task.id }}" data-title="{{ task.title }}" data-content="{{ task.content }}"
+                    data-color="{{ color }}">See
+                    More...</button>
+            </div>
+            {% endif %}
+        </div>
+        <div id="popupTaskModal"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div class="bg-white w-11/12 md:w-1/2 lg:w-1/3 rounded-lg p-6">
+                <div class="flex justify-between">
+                    <h2 class="taskTitlePopup text-lg font-semibold w-auto max-w-fit px-3 py-1 rounded text-white">{{
+                        task.title }}</h2>
+                    <button
+                        class="closePopupTask text-black-500 hover:text-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="mt-4 break-words text-justify">
+                    <p class="taskContentPupup mt-2">{{ task.content }}</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                    <button id="updateButtonPopup"
+                        class="bg-indigo-500 hover:bg-indigo-600 rounded-xl py-2 text-white">Update</button>
+                    <button id="deleteButton"
+                        class="bg-red-500 hover:bg-red-600 rounded-xl py-2 text-white">Delete</button>
+                </div>
+            </div>
+        </div>
+        <div id="updateTaskModal"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div class="bg-white w-11/12 md:w-1/2 lg:w-1/3 rounded-lg p-4">
+                <div class="flex justify-between">
+                    <h2
+                        class="bg-{{color}}-500 mb-4 text-lg font-semibold w-auto max-w-fit px-3 py-1 rounded text-white">
+                        Update: {{ task.title }}</h2>
+                    <button
+                        class="closePopupUpdateTask text-{{color}}-500 hover:text-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <form method="POST" action="{{ url_for('main.update_task', id=task.id) }}">
+                    {{ form.hidden_tag() }}
+                    {{ form.title(class="block w-full p-2 pl-3 mb-4 text-base text-gray-900 border border-gray-300
+                    rounded-xl bg-white-50 focus:ring-indigo-500 focus:border-indigo-500") }}
+                    {{ form.content(class="block w-full p-2 pl-3 mb-4 text-base text-gray-900 border border-gray-300
+                    rounded-xl bg-white-50 focus:ring-indigo-500 focus:border-indigo-500") }}
+                    <div class="form-group col-span-7">
+                        {% set category_color = {'1': 'indigo', '2': 'red', '3': 'yellow'} %}
+                        <div class="flex items-center gap-5 mb-4">
+                            {% for value, label in form.category.choices %}
+                            {% set color = category_color[value] if value in category_color else 'green' %}
+                            <label
+                                class="bg-{{color}}-500 hover:bg-{{color}}-600 text-white py-2 rounded-xl w-1/4 flex items-center justify-center">
+                                <input type="radio" name="category" value="{{ value }}">&nbsp;{{ label }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <button
+                        class="block w-full p-2 text-base text-white bg-indigo-500 rounded-xl focus:ring-indigo-500 focus:border-indigo-500">Update</button>
+                </form>
+            </div>
         </div>
         {% endfor %}
     </div>
-    <footer
-        class="fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80 py-3 shadow backdrop-blur-lg md:bottom-6 md:rounded-3xl lg:max-w-screen-lg">
-        <div class="text-center text-gray-500">&copy; 2024 <span class="text-indigo-500">Ferlando.me.</span>
-            All right reserved.</div>
-    </footer>
+    <div class="fixed inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-black/50"></div>
+    <div class="h-28">
+        <footer class="fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80
+    py-3 shadow backdrop-blur-lg md:bottom-6 md:rounded-3xl lg:max-w-screen-lg">
+            <div class="text-center text-gray-500">&copy; 2024 <span class="text-indigo-500">Ferlando.me.</span>
+                All right reserved.</div>
+        </footer>
+    </div>
 </body>
 {% endblock %}

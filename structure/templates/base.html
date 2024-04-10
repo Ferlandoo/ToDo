@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     <link rel="stylesheet" href="../static/css/main.css">
-    <script src="../static/js/message_duration.js"></script>
     <title>{% block title %}To Do List{% endblock %}</title>
 </head>
 
@@ -27,10 +26,12 @@
         class="bg-red-500 py-2 px-4 rounded-md text-white text-center fixed bottom-4 right-4 flex gap-4">
         {{ message }}
     </div>
+    <div class="bg-yellow-500 hidden"></div>
     {% endif %}
     {% endfor %}
     {% endwith %}
     <!-- End of flash messages -->
+    <script src="../static/js/basic_scripts.js"></script>
 </body>
 
 </html>

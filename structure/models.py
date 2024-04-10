@@ -1,4 +1,5 @@
 from flask_login import UserMixin
+from wtforms import SelectMultipleField, widgets
 from werkzeug.security import check_password_hash
 from . import db
 
@@ -17,5 +18,6 @@ class Task(db.Model):
     __tablename__ = 'task'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    content = db.Column(db.String(1000), nullable=False)
+    content = db.Column(db.String(2000), nullable=False)
+    category = db.Column(db.String(20), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
