@@ -4,3 +4,5 @@ sqlalchemy
 wtforms
 werkzeug
 flask_wtf
+flask_sqlalchemy
+pymysql
