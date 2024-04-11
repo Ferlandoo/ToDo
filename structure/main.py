@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, flash, redirect, url_for
+from flask import Blueprint, render_template, flash, redirect, url_for, request
 from flask_login import login_required, current_user
+from sqlalchemy import or_
 from .forms import TaskForm
 from .models import Task
 from . import db
@@ -44,3 +45,36 @@ def update_task(id):
         flash('Task updated successfully', 'success')
         return redirect(url_for('main.add_task'))
     return render_template('dashboard.html', form=updated_data, user=current_user)
+
+@main.route('/profile/search', methods=['GET', 'POST'])
+@login_required
+def search_task():
+    search_task = request.form.get('search')
+    if search_task is "" or search_task is None:
+        return redirect(url_for('main.no_results'))
+    else:
+        task = TaskForm()
+        tasks_searched = Task.query.filter(or_(Task.title.contains(search_task), Task.content.contains(search_task))).all()
+        if tasks_searched == []:
+            return redirect(url_for('main.no_results'))
+    return render_template('search.html', search=tasks_searched, user=current_user, form=task)
+
+@main.route('/profile/filter', methods=['GET', 'POST'])
+@login_required
+def filter_task():
+    category = request.form.get('category')
+    category_number ={'normal': 1, 'urgent': 2, 'important': 3, 'for-later': 4}
+    if category is None:
+        return redirect(url_for('main.add_task'))
+    else:
+        task = TaskForm()
+        if category == 'all':
+            tasks_filtered = Task.query.filter_by(user_id=current_user.id).all()
+        else:
+            tasks_filtered = Task.query.filter_by(category=category_number[category]).all()
+    return render_template('filter.html', filter=tasks_filtered, user=current_user, form=task)
+
+@main.route('/profile/no_results')
+@login_required
+def no_results():
+    return render_template('no_results.html')

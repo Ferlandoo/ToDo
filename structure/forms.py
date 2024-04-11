@@ -27,4 +27,4 @@ class LoginForm(FlaskForm):
 class TaskForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(), Length(min=2, max=20)], render_kw={"placeholder": "Title"})
     content = StringField('Content', validators=[DataRequired(), Length(min=5)], render_kw={"placeholder": "Content"})
-    category = RadioField('Category', choices=[('1', 'Normal') ,('2', 'Urgent'), ('3', 'Important'), ('4', 'For later')])
+    category = RadioField('Category', validators=[DataRequired()], choices=[('1', 'Normal') ,('2', 'Urgent'), ('3', 'Important'), ('4', 'For later')])

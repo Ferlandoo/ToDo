@@ -45,7 +45,7 @@ openModalButtons.forEach(button => {
 if (deleteButton) {
     deleteButton.addEventListener('click', () => {
         if (currentTask) {
-            window.location.href = `profile/delete/${currentTask.id}`;
+            window.location.href = `/profile/delete/${currentTask.id}`;
         }
     });
 }
@@ -94,3 +94,6 @@ updateButtonPopup.addEventListener('click', () => {
         updateTaskModal.classList.remove('hidden');
     }
 });
+
+
+// Category submit

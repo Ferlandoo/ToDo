@@ -34,38 +34,9 @@
             </div>
         </div>
     </header>
-    <div
-        class="grid mt-24 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80 py-3 shadow backdrop-blur-lg md:top-6 md:rounded-3xl lg:max-w-screen-lg sm:mt-32">
-        <form action="/profile" method="POST" class="grid grid-cols-7 gap-2 px-2 sm:gap-4 sm:px-4">
-            {{ form.hidden_tag() }}
-            {{ form.title(class="col-span-2 block w-full p-2 pl-3 text-base text-gray-900 border outline-none
-            border-gray-300
-            rounded-l-2xl bg-white-50") }}
-            {{ form.content(class="col-span-4 block w-full p-2 pl-3 text-base text-gray-900 border outline-none
-            border-gray-300
-            rounded-r-2xl bg-white-50") }}
-            <button type="submit"
-                class="col-span-1 inline-flex items-center justify-center w-full rounded-2xl bg-indigo-500 px-3 p-2 shadow-sm transition-all duration-150 hover:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                <svg class="w-6 h-6" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                </svg>
-            </button>
-            <div class="form-group col-span-7">
-                {% set category_color = {'1': 'cyan', '2': 'red', '3': 'yellow'} %}
-                <div class="flex items-center gap-2">
-                    {% for value, label in form.category.choices %}
-                    {% set color = category_color[value] if value in category_color else 'green' %}
-                    <label
-                        class="bg-{{color}}-500 text-white py-2 rounded-xl w-1/4 flex items-center justify-center hover:bg-{{color}}-600">
-                        <input type="radio" name="category" value="{{ value }}">&nbsp;{{ label }}
-                    </label>
-                    {% endfor %}
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="flex justify-end mx-auto w-full max-w-screen-md lg:max-w-screen-lg">
+    <div class="flex justify-between mx-auto w-full max-w-screen-md lg:max-w-screen-lg mt-16 md:mt-24 sm:mt-18">
+        <a class="block w-1/5 py-3 text-base text-left text-white rounded-xl bg-white-50 pl-4"
+            href="{{ url_for('main.add_task') }}">Home</a>
         <form id="filterForm" method="POST" action="/profile/filter"
             class="block w-1/5 py-3 text-base text-right text-white rounded-xl bg-white-50 pr-4">
             <select id="categorySelect" name="category" class="bg-transparent outline-none"
@@ -82,7 +53,7 @@
     <div
         class="grid grid-cols-1 gap-3 mx-auto w-full max-w-screen-md lg:max-w-screen-lg sm:grid-cols-2 md:grid-cols-3 sm:gap-4">
         {% set title_color = {'1': 'cyan', '2': 'red', '3': 'yellow' } %}
-        {% for task in user.task|reverse %}
+        {% for task in filter|reverse %}
         {% set color = title_color[task.category] if task.category in title_color else 'green' %}
         <div
             class="w-auto mx-2 border rounded-xl h-fit break-words border-gray-100 bg-white/80 p-4 shadow backdrop-blur-lg md:top-6 sm:rounded-xl sm:w-full sm:mx-auto">
