@@ -35,8 +35,8 @@ def delete_task(id):
 @main.route('/profile/update/<int:id>', methods=['GET', 'POST'])
 @login_required
 def update_task(id):
-    task = Task.query.filter_by(id=id).first()
-    updated_data = TaskForm()
+    task = Task.query.get_or_404(id)
+    updated_data = TaskForm(obj=task)
     if updated_data.validate_on_submit():
         task.title = updated_data.title.data
         task.content = updated_data.content.data
