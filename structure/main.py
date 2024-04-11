@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, request
+from flask import Blueprint, render_template, flash, redirect, url_for, jsonify, request
 from flask_login import login_required, current_user
 from sqlalchemy import or_
 from .forms import TaskForm
@@ -35,8 +35,8 @@ def delete_task(id):
 @main.route('/profile/update/<int:id>', methods=['GET', 'POST'])
 @login_required
 def update_task(id):
-    task = Task.query.get_or_404(id)
-    updated_data = TaskForm(obj=task)
+    task = Task.query.filter_by(id=id).first()
+    updated_data = TaskForm()
     if updated_data.validate_on_submit():
         task.title = updated_data.title.data
         task.content = updated_data.content.data
@@ -50,7 +50,7 @@ def update_task(id):
 @login_required
 def search_task():
     search_task = request.form.get('search')
-    if search_task is "" or search_task is None:
+    if search_task == "" or search_task == None:
         return redirect(url_for('main.no_results'))
     else:
         task = TaskForm()

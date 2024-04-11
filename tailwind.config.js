@@ -2,7 +2,8 @@
 module.exports = {
   content: ["./structure/templates/*"],
   theme: {
-    extend: {},
+    extend: {
+    },
   },
   plugins: [],
 }
