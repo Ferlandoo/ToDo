@@ -6,3 +6,4 @@ werkzeug
 flask_wtf
 flask_sqlalchemy
 pymysql
+email-validator
