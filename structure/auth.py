@@ -33,6 +33,10 @@ def register():
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('auth.login'))
+    else:
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(''.join(error), 'error')
     return render_template('sign_up.html', form=form)
 
 @auth.route('/logout')

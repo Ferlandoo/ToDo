@@ -1,18 +1,3 @@
-// Message duration
-window.onload = function () {
-    setTimeout(function () {
-        let element = document.getElementById('message-duration');
-        if (element) {
-            element.style.opacity = '0';
-            element.style.transition = 'opacity 1s';
-
-            setTimeout(function () {
-                element.style.display = 'none';
-            }, 1000);
-        }
-    }, 2500);
-};
-
 // Popup
 function toggleTaskModal(taskId, action) {
     const modal = document.querySelector(`#popupTaskModal-${taskId}`);

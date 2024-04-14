@@ -21,6 +21,10 @@ def add_task():
         db.session.commit()
         flash('Task created successfully', 'success')
         return redirect(url_for('main.add_task'))
+    else:
+        for field, errors in task.errors.items():
+            for error in errors:
+                flash(''.join(error), 'error')
     return render_template('dashboard.html', form=task, user=current_user)
 
 @main.route('/profile/delete/<int:id>')

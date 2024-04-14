@@ -4,11 +4,11 @@ from flask_sqlalchemy import SQLAlchemy
 from .config.config_app import Config
 from .config.create_db import create_database
 
-db = SQLAlchemy()
+db = SQLAlchemy(engine_options={"pool_pre_ping": True})
 
 def create_app(config_class=Config):
     app = Flask(__name__)
-    app.config.from_object(Config)
+    app.config.from_object(config_class)
 
     create_database()
     db.init_app(app)

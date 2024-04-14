@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     <link rel="stylesheet" href="../static/css/main.css">
+    <script src="../static/js/messages.js"></script>
     <title>{% block title %}To Do List{% endblock %}</title>
 </head>
 
@@ -15,22 +16,44 @@
 
     <!-- Flash messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
+    {% set ns = namespace(count=0) %}
     {% for category, message in messages %}
     {% if category == 'success' %}
-    <div id="message-duration"
-        class="bg-green-500 py-2 px-4 rounded-md text-white text-center fixed bottom-4 right-4 flex gap-4">
+    <div
+        class="message-duration z-50 bg-green-500 py-2 px-4 rounded-md text-white text-center fixed bottom-4 right-4 flex gap-4">
         {{ message }}
     </div>
     {% elif category == 'error' %}
-    <div id="message-duration"
-        class="bg-red-500 py-2 px-4 rounded-md text-white text-center fixed bottom-4 right-4 flex gap-4">
+    {% if ns.count == 0 %}
+    <div
+        class="message-duration z-50 bg-red-500 py-2 px-4 rounded-md text-white text-center fixed bottom-4 right-4 flex gap-4">
         {{ message }}
     </div>
+    {% set ns.count = ns.count + 1 %}
+    {% elif ns.count == 1 %}
+    <div
+        class="message-duration z-50 bg-red-500 py-2 px-4 rounded-md text-white text-center fixed bottom-16 right-4 flex gap-4">
+        {{ message }}
+    </div>
+    {% set ns.count = ns.count + 1 %}
+    {% elif ns.count == 2 %}
+    <div
+        class="message-duration z-50 bg-red-500 py-2 px-4 rounded-md text-white text-center fixed bottom-28 right-4 flex gap-4">
+        {{ message }}
+    </div>
+    {% set ns.count = ns.count + 1 %}
+    {% else %}
+    <div
+        class="message-duration z-50 bg-red-500 py-2 px-4 rounded-md text-white text-center fixed bottom-40 right-4 flex gap-4">
+        {{ message }}
+    </div>
+    {% set ns.count = ns.count + 1 %}
+    {% endif %}
     {% endif %}
     {% endfor %}
     {% endwith %}
     <!-- End of flash messages -->
-    <script src="../static/js/basic_scripts.js"></script>
+    <script src="../static/js/popup.js"></script>
 </body>
 
 </html>
