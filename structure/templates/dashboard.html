@@ -66,9 +66,9 @@
         </form>
     </div>
     <div class="flex justify-end mx-auto w-full max-w-screen-md lg:max-w-screen-lg">
-        <form id="filterForm" method="POST" action="/profile/filter"
+        <form method="POST" action="/profile/filter"
             class="block w-1/5 py-3 text-base text-right text-white rounded-xl bg-white-50 pr-4">
-            <select id="categorySelect" name="category" class="bg-transparent outline-none"
+            <select name="category" class="bg-transparent outline-none"
                 onchange="this.form.submit()">
                 <option disabled selected>Filter by:</option>
                 <option value="all">All</option>
