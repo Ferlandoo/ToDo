@@ -79,10 +79,6 @@ def filter_task():
         if category == 'all':
             tasks_filtered = Task.query.filter_by(user_id=current_user.id).all()
         else:
-            task = TaskForm()
-        if category == 'all':
-            tasks_filtered = Task.query.filter_by(user_id=current_user.id).all()
-        else:
             tasks_filtered = Task.query.filter(Task.category==category_number[category], Task.user_id==current_user.id).all()
     return render_template('filter.html', filter=tasks_filtered, user=current_user, form=task)
 
