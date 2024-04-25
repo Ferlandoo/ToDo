@@ -15,7 +15,7 @@
                     </a>
                 </div>
                 <form action="/profile/search" method="POST" class="relative w-5/12">
-                    <input type="text" name="search"
+                    <input type="text" name="search" value="{{ actual }}"
                         class="block w-full p-2 pl-5 text-sm text-gray-900 border border-gray-300 rounded-3xl bg-white-50 outline-none"
                         placeholder="Search...">
                     <button type="submit" value="Search"
@@ -41,7 +41,7 @@
     <div
         class="grid grid-cols-1 gap-3 mx-auto w-full max-w-screen-md lg:max-w-screen-lg sm:grid-cols-2 md:grid-cols-3 sm:gap-4">
         {% set title_color = {'1': 'cyan', '2': 'red', '3': 'yellow' } %}
-        {% for task in user.task|reverse %}
+        {% for task in search %}
         {% set color = title_color[task.category] if task.category in title_color else 'green' %}
         <div
             class="w-auto mx-2 border rounded-xl h-fit break-words border-gray-100 bg-white/80 p-4 shadow backdrop-blur-lg md:top-6 sm:rounded-xl sm:w-full sm:mx-auto">

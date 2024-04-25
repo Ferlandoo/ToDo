@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, jsonify, request
 from flask_login import login_required, current_user
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 from .forms import TaskForm
 from .models import Task
 from . import db
@@ -58,10 +58,14 @@ def search_task():
         return redirect(url_for('main.no_results'))
     else:
         task = TaskForm()
-        tasks_searched = Task.query.filter(or_(Task.title.contains(search_task), Task.content.contains(search_task))).all()
+        tasks_searched = Task.query.filter(and_(
+            Task.user_id == current_user.id, or_(
+                Task.title.contains(search_task), 
+                Task.content.contains(search_task)
+                ))).all()
         if tasks_searched == []:
             return redirect(url_for('main.no_results'))
-    return render_template('search.html', search=tasks_searched, user=current_user, form=task)
+    return render_template('search.html', search=tasks_searched, actual = search_task, form=task)
 
 @main.route('/profile/filter', methods=['GET', 'POST'])
 @login_required
